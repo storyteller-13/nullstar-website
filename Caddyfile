@@ -1,0 +1,27 @@
+# static hosting for ./dist
+#
+#   nullstar.example {
+#     import site
+#   }
+#
+
+(site) {
+	root * dist
+	encode gzip zstd
+	file_server
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy no-referrer
+		X-Frame-Options DENY
+		Content-Security-Policy "default-src 'self'"
+		-Server
+	}
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
+}
+
+:8033 {
+	import site
+}
